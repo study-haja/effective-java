@@ -364,3 +364,161 @@ public void enrollVideo() {
 
 
  물론 생성자나 정적 팩터리 방식으로 시작했다가 나중에 매개변수가 많아지면 빌더 패턴으로 전환 할 수 있다. 하지만 수정 시간 비용이 많이 발생할 것이다. 그러니 애초에 빌더로 시작하는 편이 나을 때가 많다. 결론을 말하자면 생성자나 정적 팩토리가 처리해야할 매개변수가 많다면, **가독성과, 안전성**을 겸비한 빌더 패턴을 사용하는게 훨씬 좋다.
+
+# 영문판 정리 (예제가 조금 다름)
+
+## ITEM 2 : 생성자 파라미터가 많을땐 BUILDER를 고려하라
+
+### Telescoping Constructor Pattern : 생성자 파라미터를 한개씩 추가한 생성자를 정의
+
+``` java
+public class NutritionFacts 
+{ 
+  private final int servingSize; // (mL) required 
+  private final int servings; / (per container) required 
+  private final int calories; / (per serving) optional 
+  private final int fat; / (g/serving) optional 
+  private final int sodium; / (mg/serving) optional 
+  private final int carbohydrate; / (g/serving) optional 
+  public NutritionFacts(int servingSize, int servings) 
+  { 
+    this(servingSize, servings, 0); 
+  } 
+  public NutritionFacts(int servingSize, int servings, int calories) 
+  { 
+    this( ervingSize, servings, calories, 0); 
+  } 
+  public NutritionFacts(int servingSize, int servings, int calories, int fat) { 
+    this(servingSize, servings, calories, fat, 0); 
+  }
+  public NutritionFacts(int servingSize, int servings, int calories, int fat, int sodium) 
+  { 
+    this(servingSize, servings, calories, fat, sodium, 0); 
+  } 
+  public NutritionFacts(int servingSize, int servings, int calories, int fat, int sodium, int carbohydrate) 
+  { 
+    this.servingSize = servingSize; 
+    this.servings = servings; 
+    this.calories = calories; 
+    this.fat = fat; 
+    this.sodium = sodium; 
+    this.carbohydrate = carbohydrate; 
+  } 
+}
+```
+
+>  문제점 : parameter가 많이지면 작성하기 어렵고, 가독성이 떨어진다.
+
+### JavaBeans Pattern : Setter로 값을 설정
+
+``` java
+public class NutritionFacts 
+{ 
+  private int servingSize = -1; 
+  private int servings = -1;
+  private int calories = 0; 
+  private int fat = 0; 
+  private int sodium = 0; 
+  private int carbohydrate = 0; 
+  public NutritionFacts() { } 
+  public void setServingSize(int val) {servingSize = val; } 
+  public void setServings(int val) { servings = val; } 
+  public void setCalories(int val) { calories = val; } 
+  public void setFat(int val) { fat = val; } 
+  public void setSodium(int val) { sodium = val; } 
+  public void setCarbohydrate(int val) { carbohydrate = val; } 
+}
+```
+
+아를 개선하기 위한 방법이 JavaBeans pattern이다. JavaBeans Pattern은 default constructor를 생성하고 각각의 변수들에 대한 setter함수로 값을 설정하는 방법이다. 일단 **가독성** 이 좋아졌다.
+
+하지만 다음과 같이 값을 설정하는 과정이 여러 함수호출로 나누어서 수행되기 때문에, 객체 설정과정에서 inconsistent 상태가 된다. 
+
+``` java
+NutritionFacts cocaCola = new NutritionFacts(); 
+cocaCola.setServingSize(240); 
+cocaCola.setServings(8); 
+cocaCola.setCalories(10); 
+cocaCola.setSodium(35); 
+cocaCola.setCarbohydrate(27);
+```
+
+또한 클래스가 mutable하기 떄문에 thread safe를 보장하기 위한 추가적인 작업이 필요하다. 객체가 완전히 생성될때 까지, 사용을 금지할수 있지만(freezing 방법) compiler가 프로그래머가 이에 대한 로직을 정확히 처리했는지 확인하는 것은 불가능하다. telescoping constructor pattern의 thread-safety와 JavaBeans pattern의 가독성, 두가지 장점을 결합한 대안이 Builder pattern이다.
+
+### Builder Pattern
+
+``` java
+public class NutritionFacts 
+{ 
+     private final int servingSize; 
+     private final int servings; 
+     private final int calories; 
+     private final int fat; 
+     private final int sodium; 
+     private final int carbohydrate; 
+
+    public static class Builder { 
+      private final int servingSize; 
+      private final int servings; 
+      private int calories = 0; 
+      private int fat = 0;
+      private int sodium = 0; 
+      private int carbohydrate = 0; 
+      public Builder(int servingSize, int servings) { 
+        this.servingSize = servingSize; 
+        this.servings = servings;
+      }
+
+      public Builder calories(int val) { 
+        calories = val; 
+        return this; 
+      }
+
+      public Builder fat(int val) { 
+        fat = val; 
+        return this; 
+      } 
+
+      public Builder sodium(int val) { 
+        sodium = val; 
+        return this; 
+      } 
+
+      public Builder carbohydrate(int val) { 
+        carbohydrate = val; 
+        return this; 
+      } 
+
+      public NutritionFacts build() { 
+        return new NutritionFacts(this); 
+      } 
+    } 
+
+    private NutritionFacts(Builder builder) { 
+      servingSize = builder.servingSize; 
+      servings = builder.servings; 
+      calories = builder.calories; 
+      fat = builder.fat; 
+      sodium = builder.sodium; 
+      carbohydrate = builder.carbohydrate; 
+    }
+}
+
+```
+
+과정은 다음과 같다.
+
+1. required parameter를 가진 생성자를 호출하여 builder 객체를 얻는다.
+2. builder 객체의 setter와 유사한 함수를 호출해서 값을 세팅한다.
+3. 마지막으로 build 함수를 호출해서 객체를 얻는다.
+
+이제 코드를 다음과 같이 쓸수 있다.
+
+``` java
+NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8) .calories(10).sodium(35).carbohydrate(27).build(); 
+```
+
+### Builder Pattern의 단점
+
+1. 객체를 생성하기 위해서, builder를 구현해야하는 비용이 생긴다. 이 비용이 실제로 크지 않더라도, 퍼포먼스가 중요한 상황에서는 문제가 될수 있다. 
+2. 그리고 telescoping constructor보다 verbose(장황한)한 경향이 있다. 따라서 4개이상의 파라미터에 사용하는것이 좋다. 그리고 대부분의 파라미터가 optional인 경우에 더욱 가독성이 증가하고, 사용하기 편해진다.
