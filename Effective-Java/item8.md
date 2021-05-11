@@ -1,8 +1,8 @@
-## Finalizer(소멸자)와 Cleaner 사용을 피하라.
+## Item 8 : Finalizer(소멸자)와 Cleaner 사용을 피하라.
 
 ### Finalizer란?
 
-Object 클래스의 메소드 타입중 하나로써, Garbage Collection이 수행될때 호출되는 메소드. 주로 자원을 해제하기 위해서 사용된다. Java 9에서는 deprecated됨.
+Object 클래스의 메소드 중 하나로써, Garbage Collection이 수행될때 호출되는 메소드. 주로 자원을 해제하기 위해서 사용된다. Java 9에서는 deprecated됨.
 
 ``` java
 public class FinalizerTest extends Object {
@@ -19,10 +19,7 @@ public class FinalizerTest extends Object {
 
 ### Cleaner란?
 
-Java 9부터 생겨났고
-
-수거대상이 되는 객체를 ```Cleaner``` 의 register함수로 등록한다.
-
+Java 9부터 생겨났고 수거대상이 되는 객체를 ```Cleaner``` 의 register함수로 등록한다.
 아래와 같이 수거대상이 되는 ```State``` 객체에 대한 정리 작업이 ```run()```  함수에서 수행된다.
 
 ``` java
@@ -50,7 +47,7 @@ public class Room implements AutoCloseable {
 
     public Room(int numJunkPiles) {
         state = new State(numJunkPiles);
-        cleanable = cleaner.register(this,state);
+        cleanable = cleaner.register(this,this.state);
     }
 
     @Override
@@ -66,7 +63,7 @@ run 함수가 호출되는 2가지 상황은 아래와 같다.
 1. Room 클래스의 close 메소드를 명시적으로 호출하는 경우
 2. Garbage Collector가 Room객체를 회수할때
 
-### 피해야하는 이유
+### Finalizer, Cleaner를 피해야하는 이유
 
 1. 객체가 unreachable 되는 시점에 메모리가 즉시 회수되지 않는다. 그러므로 finalizer나 cleaner에서 time-critical한 일들은 해서는 안된다. 예를들면, file close 작업이 finalizer나 cleaner에서 수행된다면 시스템 지연되어 file close가 되지않아서 더이상 파일을 열수가 없게된다.
 
@@ -168,7 +165,8 @@ run 함수가 호출되는 2가지 상황은 아래와 같다.
        public AttackVulnerable(int value) {
            super(value);
        }
-   
+       
+       @Override
        public void finalize() {
            vulnerable = this; // 제거되야할 객체를 vulnerable 변수가 참조하게 되므로, GC되지 않는다!
        }
@@ -187,7 +185,7 @@ run 함수가 호출되는 2가지 상황은 아래와 같다.
        }
    }
    ```
-
+   
    이를 방지하기 위해서, 상위 클래스를 final로 정의하여 상속을 막을 수 있다. non final class로 선언해야 하는 경우는 final ```finalize```를 정의하여 재정의를 막을수 있다. 
    
    ``` java
@@ -230,7 +228,10 @@ finalizer나 cleaner가 실행될 가능성은 높여줄수 있지만, 보장해
 ### Cleaner와 Finalizer는 언제 사용하는가?
 
 1. 자원 사용자가 ```close``` 함수 호출하는것을 잊어버렸을 경우, 대신 자원을 해제하는 용도로 사용할 수 있다. 하지만 즉시 자원을 해제 한다는 보장이 없지만, 자원을 해제 하지 않는것보다 늦게라도 해제하는것이 좋다. 이때 finalizer와 cleaner가 가진 부작용에 염두해두어야한다. 예를들어 ```FileInputStream```, ```FileOutputStream```, ```ThreadPoolExecutor```, ```java.sql.Connection``` 은 이러한 안전장치가 finalizer에 구현되어있다.
-2. Native peer를 가진 객체의 경우또한 합법적으로 사용할 수 있다. native peer란 Java 객체가 native method를 통해서 호출하는  native 객체(예를들면 C로 구현된 객체)이다. native peer는 garbage collector에 의해서 회수되지 않는다. 퍼포먼스가 괜찮고 native peer가 중요한 자원(필요없을시 즉시 해제되어야하는 자원)을 소유하고 있지 않으면, cleaner나 finalizer는 이를 대신수행할수 있다. 만약 native peer가 즉시 회수되어야 하는 자원을 갖고 있다면 ```close``` 함수를 대신 사용해야 한다.
+
+2. Native peer를 가진 객체의 경우 합법적으로 사용할 수 있다. native peer란 Java 객체가 native method를 통해서 호출하는  native 객체(예를들면 C로 구현된 객체)이다. native peer는 garbage collector에 의해서 회수되지 않는다. 퍼포먼스가 괜찮고 native peer가 중요한 자원(필요없을시 즉시 해제되어야하는 자원)을 소유하고 있지 않으면, cleaner나 finalizer는 이를 대신수행할수 있다. 만약 native peer가 즉시 회수되어야 하는 자원을 갖고 있다면 ```close``` 함수를 대신 사용해야 한다.
+
+   > 가장 간단한 예로 ```JFrame``` 와 native window가 있다. ```JFrame``` 은 Java peer이고 실제로 화면에 표시해주기 위해서 native peer가 필요하다. ```JFrame ``` 에서 ```dispose()``` 명시적으로 호출해야 native peer의 자원을 해제할수 있다.
 
 ### 정리
 
