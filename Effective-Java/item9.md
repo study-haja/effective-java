@@ -68,8 +68,7 @@
 * try-with-resources를 통해 복수개의 자원을 회수하는 코드
 
   ```java
-  static void copy(String src,  String dst) throws IOException {
-    InputStream in = new InputStream(src);
+  static void copy(String src,  String dst) throws IOException {\
     try (InputStream in = new InputStream(src);
          OutputStream out = new FileOutputStream(dst)) {
       byte[] buf = new byte[BUFFER_SIZE];
@@ -105,3 +104,4 @@ readLine에서 예외가 발생하면 다음과 같이 catch 구문에서 기본
 1. 꼭 회수해야 하는 자원을 다룰 때는 `try-finally`를 사용하지 말고 `try-with-resources`를 사용하자.
 2. 그 이유는 더 짧고 분명해지고, 만들어지는 예외 정보도 훨씬 유용하기 때문이다.
 3. 그리고 어떠한 예외도 없이  `try-with-resources`로  정확하고 쉽게 자원을 회수 할 수 있기 때문에 꼭 사용하자!
+
