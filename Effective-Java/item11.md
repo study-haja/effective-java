@@ -80,7 +80,7 @@ public int hashCode() {
 public int hashCode() {
 	int result = Short.hashCode(areaCode);
 	result = 31 * result + Short.hashCode(prefix);
-	result = 31* result + Short.hashCode(lineNum);
+	result = 31 * result + Short.hashCode(lineNum);
 	return result;
 }
 ```
@@ -110,7 +110,9 @@ public int hashCode() {
 
 ## 좀 더 들어가자면...
 
-클래스가 불변이고 해시코드를 계산하는 비용이 크다면, 매번 새로 계산하기 보다는 캐싱하는 방식을 고려해야 한다. 이 타입의 객체가 주로 해시의 키로 사용될 것 같다면 인스턴스가 만들어질 때 해시코드를 계산해둬야 한다. 해시의 키로 사용되지 않는 경우라면 hashCode가 처음 불릴 때 계산하는 지연 초기화 전략을 사용하면 좋지만 해당 클래스의 스레드를 안전하게 만들도록 신경 써야 한다.
+클래스가 불변이고 해시코드를 계산하는 비용이 크다면, 매번 새로 계산하기 보다는 캐싱하는 방식을 고려해야 한다. 이 타입의 객체가 주로 해시의 키로 사용될 것 같다면 인스턴스가 만들어질 때 해시코드를 계산해둬야 한다. 
+
+해시의 키로 사용되지 않는 경우라면 hashCode가 처음 불릴 때 계산하는 지연 초기화 전략을 사용하면 좋지만 해당 클래스의 스레드를 안전하게 만들도록 신경 써야 한다.
 
 다음 예를 보자
 
@@ -149,6 +151,6 @@ public int hashCode() {
  따라서 정리하면 다음과 같다.
 
 1. Equals를 재정의할 때는 hashCode도 반드시 재정의해야 한다. 
-2. 재정의한 hashCode는 Object. API 문서에 기술된 일반 규약을 따라야 하며, 되도록 해시코드도 서로 다르게 구현해야 한다.
+2. 재정의한 hashCode는 Object API 문서에 기술된 일반 규약을 따라야 하며, 되도록 해시코드도 서로 다르게 구현해야 한다.
 3. 귀찮으면 AutoValue 프레임워크를 사용해 정의하자.
 
