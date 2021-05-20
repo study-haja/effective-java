@@ -36,7 +36,7 @@ Object에서 Clone의 일반 규약은 다음과 같다.
 >    2. x.clone().getClass() == x.getClass()
 > 2. 하지만 이상의 요구를 반드시 만족해야 하는 것은 아니다. 다음을 보면
 >    1. x.clone().equals(x) 은 참이지만 필수는 아니다.
-> 3. 관례상, 이 메소드가 반환하는 객체는 super.clone을 호출해  얻어야 한다. 이 클래스와 Object를제 제외한 모든 상위 클래스가 이 관례를 따른다면 다음 식은 참이다.
+> 3. 관례상, 이 메소드가 반환하는 객체는 super.clone을 호출해  얻어야 한다. 이 클래스와 Object를 제외한 모든 상위 클래스가 이 관례를 따른다면 다음 식은 참이다.
 >    1. x.clone().getClass() == x.getClass()
 > 4. 관례상, 반환된 객체와 원본 객체는 독립적이어야 한다. 이를 만족하려면 super.clone으로 얻은 객체의 필드 중 하나 이상을 반환 전에 수정해야 할 수 도 있다.
 
@@ -79,7 +79,7 @@ Object에서 Clone의 일반 규약은 다음과 같다.
 
  clone을 재정의한 클래스가 final이라면 걱정해야 할 하위 클래스가 없으니 이 관례는 무시해도 된다. 하지만 final 클래스의 clone 메소드가 super.clone을 호출하지 않는다면 Cloneable을 구현할 이유도 없다. Object의 clone 구현의 동작 방식에 기댈 필요가 없기 때문이다.
 
- 제대로 동작하는 clone 메소드를 가진 상위 클래스를 상속해 Cloneable을 구현하고 싶다면 먼저 super.clone을 호출한다. 그렇게 얻은 객체는 원본의 완벽한 복제본일 것이고 클래스에 정의도니 모든 필드는 원본 필드와 똑같은 값을 갖는다. 또한 모든 필드가 기본 타입이거나 불변 객체를 참조한다면 더욱더 완벽한 상태가 될 것이다. 다음 예제가 여기에 해당한다.
+ 제대로 동작하는 clone 메소드를 가진 상위 클래스를 상속해 Cloneable을 구현하고 싶다면 먼저 super.clone을 호출한다. 그렇게 얻은 객체는 원본의 완벽한 복제본일 것이고 클래스에 정의되니 모든 필드는 원본 필드와 똑같은 값을 갖는다. 또한 모든 필드가 기본 타입이거나 불변 객체를 참조한다면 더욱더 완벽한 상태가 될 것이다. 다음 예제가 여기에 해당한다.
 
 * 가변 상태를 참조하지 않는 클래스용 clone메소드
 
@@ -88,7 +88,7 @@ Object에서 Clone의 일반 규약은 다음과 같다.
   public PhoneNumber clone() {
   	try {
   		return (PhoneNumber) super.clone();
-  	} catch(CloneNotSupportedException e) { // PhoneNumber에 Cloneable 인터페이스 구현
+  	} catch (CloneNotSupportedException e) { // PhoneNumber에 Cloneable 인터페이스 구현
   		throw new AssertionError(); // 일어날 수 없는 일
   	}
   }
@@ -245,7 +245,7 @@ private 클래스인 HashTable.Entry는 깊은복사를 지원하고 clone 메�
 * 엔트리 자신이 가리키는 연결 리스트를 반복적으로 복사하는 방법
 
   ```java
-  Entry() deepCopy() {
+  Entry deepCopy() {
   	Entry result = new Entry(key, value, next);
   	for (Entry p = result; p.next != null; p = p.next) { // Entry를 순회하며 next가 null일때 까지 new Entry() 생성
   		p.next = new Entry(p.next.key, p.next.value, p.next.next); 
@@ -287,7 +287,7 @@ Object의 clone메소드는 CloneNotSupportedException을 던지고 선언했지
 
 또한 상속해서 쓰기 위한 클래스 설계 방식 두가지 중 어느 쪽에서든 상속용 클래스는 Cloneable을 구현해서는 안된다. 그 이유는 Object의 방식을 모방할 수도  있기 때문이다. 따라서 상속관계에서 clone() 방법은 다음과  같다.
 
-1. 제대로 작동하는 clone 메소드를 구현해 protected로 두고 CloneNotSupportedException도 전질 수 있다고 선언하는 것이다.
+1. 제대로 작동하는 clone 메소드를 구현해 protected로 두고 CloneNotSupportedException도 던질 수 있다고 선언하는 것이다.
 2. clone을 동작하지 않게 구현해놓고 하위 클래스에서 재정의하지 못하게 할 수 도 있다.
 
 * 하위 클래스에서 Cloneable를 지원하지 못하게 하는 clone 메소드
