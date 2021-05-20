@@ -22,8 +22,8 @@ public class WordList {
 >
 > sgn(x) == 1 if x > 0
 
-1. 모든 x,y에 대해서, sgn(x.compareTo(y)) == -sgn(y.compareTo(x))
-2. x.compareTo(y) > 0 && y.compareTo(z) > 0 이면 x.compareTo(z) > 0
+1. 대칭성 : 모든 x,y에 대해서, sgn(x.compareTo(y)) == - sgn(y.compareTo(x))
+2. 이행성 : x.compareTo(y) > 0 && y.compareTo(z) > 0 이면 x.compareTo(z) > 0
 3. x.compareTo(y) == 0이면,  모든 z에 대해서 sgn(x.compareTo(z)) == sgn(y.compareTo(z)) 
 4. (필수는 아님) (x.compareTo(y) == 0) == (x.equals(y)) . 이 규칙은 필수가 아니지만 만약 어길경우, **주의 : 이 클래스는 equals와는 일관적이지 않은 순서를 갖고있음** 이라고 명시해야한다.
 
@@ -81,6 +81,11 @@ static Comparator<Object> hashCodeOrder = new Comparator<>() {
 static Comparator<Object> hashCodeOrder = Comparator.comparingInt(o -> o.hashCode()) ;
 ```
 
+## Comparator vs Comparable
+
+코드의 간결성과 가독성을 위해서 Comparator의 chaining 함수를 사용하는 것이 선호된다.
+
 ## 정리
 
 정렬이 필요한 value class에는 ```Comparable``` 인터페이스를 구현해야한다. ```compareTo``` 함수를 구현할때 필드를 비교하는 과정에서 <, > 연산자를 피하고 boxed primitive 클래스에 정의 되어있는 static ```compare``` 함수를 사용하거나 ```Comparator``` 인터페이스에 있는 construction method를 사용하라.
+
