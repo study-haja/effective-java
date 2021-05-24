@@ -3,7 +3,7 @@
 다음과 같은 클래스가 있다고 가정하자.
 
 ``` java
-class Point {
+public class Point {
   public double x;
   public double y;
 }
@@ -14,7 +14,8 @@ class Point {
 따라서 다음과 같이 정의하여, 클래스의 내부표현 방식을 변경할수 있도록 해야한다.
 
 ``` java 
-class Point { 
+public class Point { 
+ 
   private double x; 
   private double y; 
   
