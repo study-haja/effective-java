@@ -45,7 +45,7 @@ public interface TimeClient {
     void setDate(int day, int month, int year);
     void setDateAndTime(int day, int month, int year, int hour, int minute, int second);
     LocalDateTime getLocalDateTime();
-
+  
     static ZoneId getZoneId (String zoneString) {
         try {
             return ZoneId.of(zoneString);
@@ -55,7 +55,7 @@ public interface TimeClient {
             return ZoneId.systemDefault();
         }
     }
-		
+		  
     default ZonedDateTime getZonedDateTime(String zoneString) {
         return ZonedDateTime.of(getLocalDateTime(), getZoneId(zoneString));
     }
@@ -100,7 +100,7 @@ public interface Ivending {
     }
 }
 
-public Abstract SkeletalCandyMachine implements Ivending {
+public abstract SkeletalCandyMachine implements Ivending {
 
   	@Override
     public void chooseProduct() {
