@@ -40,7 +40,7 @@ class Dessert {
 
 여기서 `javac Main.java Dessert.java` 컴파일을 한다면 오류가 날 것이다. 그 이유는 Main에서 Utensil 클래스를 먼저 호출하기 때문에 Utensil 자바 파일 안에 Utensil하고 Dessert와 Dessert 자바 파일 안에 있는 Utensil과 Dessert 클래스를 중복 정의했다고 알려줄 것이다. ( 명령어 Dessert.java를 실행한 순간 중복 정의했다고 컴파일러는 알려 줄 것이다. )
 
-하편 `javac Main.java`나 `javac Main.java Utensil.java` 명령어로 컴파일하면 아무 오류 없이 pencake을 출력할 것이다. 그러나 `javac Dessert.java Main.java` 명령어를 치면 potpie를 출력할 것이다.
+한편 `javac Main.java`나 `javac Main.java Utensil.java` 명령어로 컴파일하면 아무 오류 없이 pencake을 출력할 것이다. 그러나 `javac Dessert.java Main.java` 명령어를 치면 potpie를 출력할 것이다.
 
 이처럼 컴파일러에 어느  소스파일을 먼저 건네느냐에 따라 동작이 달라지므로 반드시 바로 잡아야 할 문제이다.
 
