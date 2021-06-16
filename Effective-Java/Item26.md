@@ -30,6 +30,8 @@ raw type을 사용할 수는 있지만 제너릭이 가진 안전성과 명료�
 임의의 객체를 삽입하기 위해서 ```List``` 를 사용하는건 안되지만  ```List<Object>``` 는 사용해도 괜찮다. 그렇다면 둘의 차이는 무엇일까? 대략적으로 설명하자면, ```List``` 는 제너릭 타입 시스템을 채택하지 않은것이고, ```List<Object>``` 는 명시적으로 컴파일러에게 아무 타입의 객체들을 수용할 수 있어야 한다고 명시해둔 것이다. ```List<Object>``` 는 ```List``` 의 서브 타입이다. 즉 다음과 같은 코드가 가능하다.
 
 ``` java
+// Map<String,String>, Map
+// Set<Integer>, Set
 public static void main(String[] args) {
   List<String> strings = new ArrayList<>();
   unsafeAdd(strings,Integer.valueOf(42));

@@ -1,4 +1,4 @@
-# ITEM 24 : NONSTATIC 보다 STATIC 클래스를 선호하라.
+# ITEM 24 : NONSTATIC 보다 STATIC 멤버 클래스를 선호하라.
 
 Nested class(이하 중첩클래스)는 오직 Enclosing class(이하 동봉 클래스)를 돕기 위해서만 사용되어야 한다. 만약 그렇지 않으면 top level 클래스로 정의해야 한다.
 
@@ -50,22 +50,27 @@ public class ExportedAPIClass {
 public class EnclosingClass {
 
     private int member1;
-    public NestedClass funcA() {
+    public NestedClass enclosingFunc() {
         return new NestedClass();
     }
     class NestedClass {
 
-        public void funcA() {
-            this.funcA(); // this로 동봉 객체 레퍼런스 획득 가능
-            funcA(); // 동봉 객체의 함수 호출 가능
-            int a = member1;
+        public void nestedFunc() {
+            enclosingFunc();
+            int a = member1; // 동봉객체의 변수 접근 가능
         }
     }
-  
-     public static void main(String[] args) {
+
+    static class StaticNestedClass {
+
+        public void funcA() {
+        }
+    }
+
+    public static void main(String[] args) {
         EnclosingClass ec = new EnclosingClass();
         NestedClass nc = ec.new NestedClass();
-        // NestedClass nc2 = new NestedClass(); -> 컴파일 에러
+        //NestedClass nc2 = new NestedClass(); -> fail!
     }
 }
 ```
@@ -79,7 +84,8 @@ public class MySet<E> extends AbstractSet<E> {
     
     // ...
     
-    @Override public Iterator<E> iterator() {
+    @Override 
+  	public Iterator<E> iterator() {
         return new MyIterator();
     }
 
@@ -92,7 +98,7 @@ public class MySet<E> extends AbstractSet<E> {
 
 만약 멤버 클래스가 동봉 인스턴스에게 접근할 필요가 없다면, 선언에 static modifier를 추가해야한다.
 
-만약 그렇지 않으면, 동봉 인스턴스에 대한 레퍼런스를 가지게 되고, 이 레퍼런스를 저장하는데는 시간과 메모리 공간이 소모된다. 그리고 동봉 인스턴스가 GC가 되지 않게 된다. 이런경우, 메모리 릭이 발생할 수 있고 디버깅하기가 매우 까다롭다.
+만약 그렇게 하지 않으면, 동봉 인스턴스에 대한 레퍼런스를 가지게 되고, 이 레퍼런스를 저장하는데는 시간과 메모리 공간이 소모된다. 그리고 동봉 인스턴스가 GC가 되지 않게 된다. 이런경우, 메모리 릭이 발생할 수 있고 디버깅하기가 매우 까다롭다.
 
 ## 3. Anonymous class
 
@@ -131,7 +137,7 @@ public class AnonymousClassExample {
 
     public static void main(String[] args) {
         AnonymousClassExample anonymousClassExample = new AnonymousClassExample(1.0,2.0);
-        System.out.println(anonymousClassExample.operate());
+        System.out.println(anonymousClassExample.operate()); // 3.0
     }
 }
 
@@ -142,6 +148,8 @@ interface Operator {
 ```
 
 ## 4. Local class
+
+다음과 같이 함수 내부에서 클래스를 정의할수 있는 형태를 말한다. 함수 내에서만 클래스에 접근할 수 있다.
 
 ``` java
 public class LocalClassExample {
@@ -165,18 +173,19 @@ public class LocalClassExample {
             }
         }
         LocalClass localClass = new LocalClass("local");
+      	LocalClass other = new LocalCalss("other");
         localClass.print();
     }
 
     public static void main(String[] args) {
-        new LocalClassExample(10).foo();
+        new LocalClassExample(10).foo(); // local10
     }
 }
 ```
 
 ## 정리
 
-중첩 클래스에는 4가지 타입이 있으며, 각자 사용되는 상황이 다르다. 만약 클래스가 단일 메소드 밖에서 접근 가능 해야 하거나, 단일 메소드에서 정의하기에 코드가 너무 긴 경우, 멤버 클래스를 사용해야 한다. 만약 동봉 인스턴에 대해서 접근가능해야 한다면 non static으로 정의해야 한다. 그렇지 않으면 static으로 정의하라. 만약 클래스가 메소드에 속하면서 오직 한 장소에서만 객체를 생성해야 하며, 클래스의 특징에 맞는 타입이 존재한다면 익명 클래스로 정의하라. 그렇지 않으면 로컬 클래스를 사용하라.
+중첩 클래스에는 4가지 타입이 있으며, 각자 사용되는 상황이 다르다. 만약 클래스가 단일 메소드 밖에서 접근 가능 해야 하거나, 단일 메소드에서 정의하기에 코드가 너무 긴 경우, 멤버 클래스를 사용해야 한다. 만약 동봉 인스턴스에 대해서 접근가능해야 한다면 non static으로 정의해야 한다. 그렇지 않으면 static으로 정의하라. 만약 클래스가 메소드에 속하면서 오직 한 장소에서만 객체를 생성해야 하며, 클래스의 특징에 맞는 타입이 존재한다면 익명 클래스로 정의하라. 그렇지 않으면 로컬 클래스를 사용하라.
 
 
 
