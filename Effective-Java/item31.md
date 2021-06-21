@@ -29,7 +29,7 @@ pushAll 메소드는 컴파일은 되지만 완벽하지 않다. Iterable src의
 * 오류 예제
 
 ```java
-드Stack<Number> numberStack = new Stack<>();
+Stack<Number> numberStack = new Stack<>();
 Iterable<Integer> integers = ...;
 numberStack.pushAll(integers);
 ```
@@ -218,7 +218,7 @@ public static void swap(List<?> list, int i, int j);
 
 ```java
 public static void swap(List<?> list, int i, int j) {
-	list.get(i, list.set(j, list.get(i)));
+	list.set(i, list.set(j, list.get(i)));
 }
 ```
 
