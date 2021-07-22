@@ -11,7 +11,7 @@ Collections.sort(words, new Comparator<String>() {
 
 위와 같이 anonymous class를  사용해서 sort함수를 호출할 수 있다.
 
-하지만 코드의 길이가 길어진다는 단점이 있다. Java8부터는 하나의 추상 메소드를 가진 인터페이스를 특별하게 취급하기 시작했다. 이러한 인터페이스를 ```functional interface``` 라고 부른다. 언어적 차원에서 이러한 인터페이스를 **lamda expression** 으로 부를 수 있도록 허락하게 되었다. 람다는 익명 anonymous class와 유사하지만 더 간결하다.
+하지만 코드의 길이가 길어진다는 단점이 있다. Java8부터는 하나의 추상 메소드를 가진 인터페이스를 특별하게 취급하기 시작했다. 이러한 인터페이스를 ```functional interface``` 라고 부른다. 언어적 차원에서 이러한 인터페이스를 **lamda expression** 으로 부를 수 있도록 허락하게 되었다. 람다는 anonymous class와 유사하지만 더 간결하다.
 
 ``` java
 Collections.sort(words,(s1,s2)->Integer.compare(s1.length(),s2.length()));
@@ -29,13 +29,13 @@ Collections.sort(words,(s1,s2)->Integer.compare(s1.length(),s2.length()));
 Collections.sort(words, Comparator.comparingInt(String::length));
 ```
 
-사실 여기서 List 인터페이서의 sort 함수를 사용해서, 한단계 더 간단하게 표현할 수 있다.
+사실 여기서 List 인터페이스의 sort 함수를 사용해서, 한단계 더 간단하게 표현할 수 있다.
 
 ```java
 words.sort(Comparator.comparingInt(String::length))
 ```
 
-람다는 이름과 문서화가 부족하다. 따라서 만약 계산이 self-explanatory 하지 못하거나 몇 줄이상 되는 경우 lamda에 넣지 않는것이 좋다. 람다는 하줄이 이상적이다. 그리고 3줄이 최대 라인수이다. 만약 이 규칙을 어기면 가독성이 엄청 안좋아지게 된다.
+람다는 이름과 문서화가 부족하다. 따라서 만약 계산이 self-explanatory 하지 못하거나 몇 줄이상 되는 경우 lamda에 넣지 않는것이 좋다. 람다는 한줄이 이상적이다. 그리고 3줄이 최대 라인수이다. 만약 이 규칙을 어기면 가독성이 엄청 안좋아지게 된다.
 
 ## 익명클래스 vs Lambda
 
