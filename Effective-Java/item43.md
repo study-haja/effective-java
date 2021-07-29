@@ -1,4 +1,4 @@
-# Item43 : 람다보다는 메소드  참조를  사용하라
+# Item43 : 람다보다는 메소드 참조를 사용하라
 
 람다가 익명 클래스보다 나은 점 중 가장 큰 특징은 간결함이다. 하지만 람다보다도 더 간결하게 만드는 방법이 존재한다. 바로 메소드 참조를 통해 더 간결하게 만들 수 있다. 다음 코드를 보자
 
@@ -90,7 +90,7 @@ service.execute(() -> action());
 
      ```java
      // 람다 버전
-     str -> st.toLowerCase()
+     str -> str.toLowerCase()
      
      // 정적 메소드 버전
      String::toLowerCase

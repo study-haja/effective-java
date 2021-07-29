@@ -105,7 +105,7 @@ public class Anagrams {
       words.collect(groupingBy(word -> alphabetize(word))) 
         .value().stream()
         .filter(group -> group.size() >= minGroupSize)
-        .forEach(group -> System.out.println(group.size() + " ; " + group));
+        .forEach(group -> System.out.println(group.size() + " : " + group));
     }
   }
   
@@ -159,7 +159,7 @@ Hello world!를 출력하리라 기대했지만, 721011..... 이런식으로 출
 1. 원소들의 시퀀스를 일관되게 변환한다.
 2. 원소들의 시퀀스를 필터링한다.
 3. 원소들의 시퀀스를 하나의 연산을 사용해 결합한다.( 더하기, 연결하기, 최솟값 구하기 등 )
-4. 원소들의 시퀀스를 컬렉션에 모든다.( 공통된 속성을 기준으로 묶어가며 )
+4. 원소들의 시퀀스를 컬렉션에 모은다.( 공통된 속성을 기준으로 묶어가며 )
 5. 원소들의 시퀀스에 특정 조건을 만족하는 원소를 찾는다.
 
 
@@ -169,7 +169,7 @@ Hello world!를 출력하리라 기대했지만, 721011..... 이런식으로 출
 * 처음 20개의 메르센 소수를 출력하는 프로그램
 
 ```java
-static Stram<BigInteger> prinmes() { // 2^p-1 수에서 p가 소수이면 해당 메르센 수도 소수일 수 있는데 이때 그 수를 메르센 수
+static Stram<BigInteger> primes() { // 2^p-1 수에서 p가 소수이면 해당 메르센 수도 소수일 수 있는데 이때 그 수를 메르센 수
 	return Stream.iterate(TWO, Biginteger::nextProbablePrime);
 }
 
@@ -191,7 +191,7 @@ public static void main(String[] args) {
 
 
 
-또한 스트림과 반복 중 어느족을 써야 할지 바로 알기 어려운 작업도 많다. 다음 에를 보자.
+또한 스트림과 반복 중 어느쪽을 써야 할지 바로 알기 어려운 작업도 많다. 다음 예를 보자.
 
 * 데카르트 곱 계산 - 반복 방식
 
@@ -220,3 +220,4 @@ private static List<Card> newDeck() {
 ```
 
 위의 예제들 처럼 답은 없다. 즉 개인 취향과 프로그래밍 환경의 문제다. 그러니 스트림에 대해 확신이 들지 않는다면 첫 번째 방식을 사용하는 것이 좋고 안전할 것이다. 그러나 스트림 방식이 더 나아보이고 동료들도 스트림 코드를 이해할 수 있고 선호한다면 스트림 방식을 사용하자.
+
