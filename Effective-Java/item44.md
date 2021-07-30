@@ -8,7 +8,7 @@ protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
 }
 ```
 
-위 방법 대신 람다를 사용해서 ``LinkedHashMap`` 의 static factory or connstructor에 function object를 전달해서 구현하는 것이 낫다.
+위 방법 대신 람다를 사용해서 ``LinkedHashMap`` 의 static factory or constructor에 function object를 전달해서 구현하는 것이 낫다.
 
 ``` java
 @FunctionalInterface interface
@@ -27,7 +27,7 @@ protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
 - Predicate : boolean 타입을 입력으로 받아서, boolean 타입을 리턴
 - Function : argument, return 타입이 다른 경우
 - Supplier : 0 argument를 받아서 값을 리턴
-- Consumer : argument랄 받아서 return 하지 않음.  
+- Consumer : argument를 받아서 return 하지 않음.  
 
 그리고 각각의 functional interface에는 primitive type을 지원하도록 설계되어있다. 그렇기 때문에 boxed primitive를 가진 기본 functional interface보다는 primitive functinal interface를 사용하는것이 좋다. (ITEM 61에서 보겠지만, 성능상 더 이점이 있다.)
 
