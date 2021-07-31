@@ -1,10 +1,10 @@
 #  ITEM 46 : STREAM에서 SIDE EFFECT가 없는 함수를 선호하라.
 
-스트림 패러다임은 계산을 일녀의 transformation으로 구조화하는 것인데, 여기서 transformation은 이전 단계의 결과에 대해 항상 pure function 성질을 유지해야 한다. 
+스트림 패러다임은 계산을 일련의 transformation으로 구조화하는 것인데, 여기서 transformation은 이전 단계의 결과에 대해 항상 pure function 성질을 유지해야 한다. 
 
 >pure function 이란 결과가 항상 input에만 의존하는 함수를 말한다.
 >
->이를 달성하기 위해서는, stream 작업도중에 중간 결과나 죄종 결과들이 side effect가 없어야 한다. 
+>이를 달성하기 위해서는, stream 작업도중에 중간 결과나 최종 결과들이 side effect가 없어야 한다. 
 >
 >side effect는 외부 상태를 변경하거나 예상치 못한 에러가 발생하는 상황을 말한다.
 
@@ -102,4 +102,4 @@ words.collect(groupingBy(word->alphabetize(word)))
 
 스트림 파이프라인을 프로그래밍하는것의 본질은 side-effect 없는 함수 객체들이다.
 
-stream의 종료작업에서 forEach를 할경우, 계산의 결과를 보고하는 용도로만 사용되어야 한다. 절대 계산을 하는 용도로 사용되어서는 안된다. stream을 적절히 사용하기 위해서는  collector에 대해서 알아야하는데, 가장 중요한 collector 5가지는 다음과 같다.  ```toLIst, toSet, toMap, groupingBy, joining```
+stream의 종료작업에서 forEach를 할경우, 계산의 결과를 보고하는 용도로만 사용되어야 한다. 절대 계산을 하는 용도로 사용되어서는 안된다. stream을 적절히 사용하기 위해서는  collector에 대해서 알아야하는데, 가장 중요한 collector 5가지는 다음과 같다.  ```toList, toSet, toMap, groupingBy, joining```
