@@ -17,7 +17,7 @@ static Stream<BigInteger> primes() {
 
 >pipeline을 병렬화 하는 작업은 ```Stream.iterate``` 나 ```limit``` 이 사용된 경우에는 성능이 거의 좋아지지 않는다. stream 라이브러리가 병렬적으로 실행하는 방법을 모르기 때문이다
 
-스트림 파이프라인을 무조건 병렬화 시켜서는 않된다. 잘못하면 퍼포먼스가 굉장히 않좋아진다.
+스트림 파이프라인을 무조건 병렬화 시켜서는 않된다. 잘못하면 퍼포먼스가 굉장히 안좋아진다.
 
 > parallelism으로 성능이 향상되는 경우는 ArrayList, HashSet,ConcurrentHashMap 인스턴스; 배열; int ranges, long ranges 이다.
 
@@ -29,7 +29,7 @@ static Stream<BigInteger> primes() {
 
 2. ```locality of reference``` (참조의 지역화)
 
-   순차적으로 처리될때, 순차적인 원소는 메모리에서 함께 저장이 된다. 참조의 지역화는 bulk 작업을 병렬화 할때 매우 중요하다. 메모리에 있는 데이터를 processor 캐시로 저장하는 과정에서 스레드의 대기시간을 줄이는데 중요한 역할을 한다.
+   순차적으로 처리될때, 순차적인 원소는 메모리에서 함께 저장이 된다. 참조의 지역화는 bulk 작업을 병렬화 할때 성능을 향상시킨다. 메모리에 있는 데이터를 processor 캐시로 저장하는 과정에서 스레드의 대기시간을 줄이는데 중요한 역할을 하기 때문이다.
 
 ## stream을 병렬화 할때 주의할점
 
