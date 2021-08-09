@@ -101,7 +101,7 @@ public static <E> Stream<E> streamOf(Iterable<E> iterable) {
 
 ### 결론
 
-하지만  공개 API를 작성할 때 는 스트림 파이프라인을 사용하는 사람과 반복문에서 쓰려는 사람 모두 배려 해야한다. 즉 Collection 인터페이스를 사용해 둘다 만족하는 코드를 작성하는 것이 좋다.
+하지만  공개 API를 작성할 때는 스트림 파이프라인을 사용하는 사람과 반복문에서 쓰려는 사람 모두 배려 해야한다. 즉 Collection 인터페이스를 사용해 둘다 만족하는 코드를 작성하는 것이 좋다.
 
 Collection 인터페이스는 iterable의 하위 타입이고 stream 메소드도 제공하니 반복과 스트림을 동시에 지원한다. **따라서 원소 시퀀스를 반환하는 공개 API의 반환 타입에는 Collection이나 그 하위 타입을 쓰는 게 일반적으로 최선이다.** 예를 들어 Arrays 역시 Arrays.asList와 Stream.of 메소드로 손쉽게 반복과 스트림을 지원할 수 있다.
 
