@@ -93,7 +93,7 @@ public class SetList {
 }
 ```
 
-위 코드의 예상 결과는 set과 list에서 -3~3값이 추가되고 0~2를 가진 값이 삭제 되는 것이다. 
+위 코드의 예상 결과는 set과 list에서 -3~2값이 추가되고 0~2를 가진 값이 삭제 되는 것이다. 
 
 set의 경우는  ```set.remove(i)``` 에서 ```remove(E)``` 함수를 선택하고 여기서 E는 Integer 타입으로 치환된다. 그리고 int 값은 Integer로 boxing이 이루어진다. 결과적으로, 우리가 예상한대로 ```[-3,-2,-1]``` 가 출력된다.
 
@@ -113,7 +113,8 @@ new Thread(System.out::println).start();
 ```
 
 ``` java
-ExecutorService exec = Executors.newCachedThreadPool(); exec.submit(System.out::println);
+ExecutorService exec = Executors.newCachedThreadPool(); 
+exec.submit(System.out::println);
 ```
 
 첫번째 코드는 컴파일이 되지만, 두번째 코드는 컴파일이 되지 않는다. 이유는 ```submit``` 함수는 ```Callable<T>```(T 타입을 리턴하는 함수) 를 인자로 받는데, ```println``` 함수가 오버로딩 되있어서, 예상과 다르게 컴파일이 되지 않는다.
