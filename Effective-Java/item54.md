@@ -60,6 +60,7 @@ return cheesesInStock.toArray(new Cheese[0]);
 
 ``` java
 private static final Cheese[] EMPTY_CHEESE_ARRAY = new Cheese[0];
+List<Cheese> -> Cheese[] 
 public Cheese[] getCheeses() {
 return cheesesInStock.toArray(EMPTY_CHEESE_ARRAY);
 }
