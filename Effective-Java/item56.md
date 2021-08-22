@@ -19,7 +19,7 @@
 ## 전제조건과 사후조건 뿐 아니라 부작용도 문서화 하라
 
 - 부작용이란 사후조건으로 명확히 나타나지는 않지만 시스템의 상태에 따라 어떠한 변화를 가져오는 것을 의미한다.
-- 예를들어 메서드에서 백그라운 스레드를 실행시키는 메서드라면 이를 밝혀야 한다.
+- 예를들어 메서드에서 백그라운 스레드를 실행시킨다면, 이를 밝혀야 한다.
 
 ## 문서화 태그
 
@@ -34,7 +34,7 @@
 - @implSpec
   - 해당 메서드와 하위 클래스 사이의 관계를 설명하여, 하위 클래스들이 그 메서드를 상속하거나 super 키워드를 호출할때 그 메서드가 어떻게 동작하는지를 명확히 인지하고 사용할 수 있도록 해야한다.
 
-``` jaa
+``` java
 /**
 * Returns the element at the specified position in this list.
 *
@@ -64,7 +64,7 @@ E get(int index);
 
 - 제네릭 타입이나 제네릭 메서드를 문서화 할 때는 모든 타입 매개변수에 주석을 달아야 한다.
 
-```
+```java
  /* 
  * An object that maps keys to values.  A map cannot contain duplicate keys;
  * each key can map to at most one value.
@@ -80,7 +80,7 @@ public interface Map<K, V> {
 - 열거 타입을 문서화할 때는 상수들에도 주석을 달아야 한다.
 - 열거 타입 자체와 열거 타입의 public 메서드도 물론이다.
 
-```
+```java
 /**
 * An instrument section of a symphony orchestra
 */
@@ -97,12 +97,11 @@ public enum OrchestraSection {
 
 ## 애너테이션 타입을 문서화 할 때는 멤버에도 주석을 달아라
 
-- 애너테이션 타입을 문서화할 때는 멤버들에도 모두 주석을 달아야 한다.
 - 애너테이션 타입 자체도 물론이다.
 - 필드 설명은 명사구로 한다.
 - 애너테이션 타입의 요약 설명은 프로그램 요소에 이 애너테이션을 단다는 것이 어떤 의미인지를 설명하는 동사구로 한다.
 
-```
+```java
 /**
  * Indicates that the annotated method is a test method that 
  * must throw the designated exception to pass
