@@ -13,7 +13,7 @@
 
 Optional<T> 는 null이 아닌 T 타입 참조를 하나 담거나, 혹은 아무것도 담지 않을 수 있다는 뜻이다. 즉 옵셔널은 원소를 최대 1개 가질 수 있는 불변 컬렉션인다.
 
-보통은 T를 반환해야 하지만 특정 조건에서는 아무것도 반환하지 않아야 할 때 T 대신 Optiona<T>를 반환하도록 선언하면 좋다. 그러면 유효한 반환값이 없을 때는 빈 결과를 반환하는 메서드가 만들어진다. 
+보통은 T를 반환해야 하지만 특정 조건에서는 아무것도 반환하지 않아야 할 때 T 대신 Optional<T>를 반환하도록 선언하면 좋다. 그러면 유효한 반환값이 없을 때는 빈 결과를 반환하는 메서드가 만들어진다. 
 
 옵셔널을 반환하는 메서드는 예외를 던지는 메소드보다 유연하고 사용하기 쉬우며, null을 반환하는 메소드보다 오류 가능성이 작다. 다음 예를 보자.
 
@@ -40,7 +40,7 @@ public static <E extends Comparable<E>> E max(Collection<E> c) {
 ```java
 public static <E extends Comparable<E>> Optional<E> max(Collection<E> c) {
 	if (c.isEmpty())
-    throw Optional.empty(); // 빈 옵셔널 
+    return Optional.empty(); // 빈 옵셔널 
   
   E result = null;
   for (E e : c)
@@ -91,7 +91,7 @@ Toy myToy = max(toy).orElseThrow(TemperTantrumException::new);
 Element lastNobleGas = max(Elements.NOBLE_GASES).get();
 ```
 
-이따금 기본값을 설정하는 비용이 아주 커서 부담이 될 때가 있다. 그럴 때는 Supplier<T>를인수로 받는 orElseGet을 사용하면, 값이 처음 필요할 때 Supplier<T>를 사용해 생성하므로 초기 설정 비용을 낮출 수 있다. 더 나아가 filter, map, flatMap,ifPresent등 특별한 쓰임에 대비한 메소드도 있기 때문에 적절하게 사용하면 된다.
+이따금 기본값을 설정하는 비용이 아주 커서 부담이 될 때가 있다. 그럴 때는 Supplier<T>를 인수로 받는 orElseGet을 사용하면, 값이 처음 필요할 때 Supplier<T>를 사용해 생성하므로 초기 설정 비용을 낮출 수 있다. 더 나아가 filter, map, flatMap,ifPresent등 특별한 쓰임에 대비한 메소드도 있기 때문에 적절하게 사용하면 된다.
 
 여기서 ifPresent를 보면 옵셔널이 비어있으면 false, 채워져있으면 true를 반환한다. 이 메소드로 원하는 작업을 모두 수행할 수 있지만, 앞에 언급했던 메소드들로 대체할 수 있다. 다음 예를 보자.
 
@@ -119,7 +119,7 @@ streamOfOptionals
   .map(Optional::get)
 ```
 
-자바 9에서는 Optional에 stream() 메소드가 추가되었다. 이 메소드는 Optional을 Stream으로 변환해주는 어댑터이다. 옵셔널에 값이 있으면 가 값을 원소로 담은 스트림으로, 값이 없다면 빈 스트림으로 변환한다. 이를 stream의 flatMap 메소드와 조합하면 앞의 코드를 다음처럼 바꿀 수 있다.
+자바 9에서는 Optional에 stream() 메소드가 추가되었다. 이 메소드는 Optional을 Stream으로 변환해주는 어댑터이다. 옵셔널에 값이 있으면 값을 원소로 담은 스트림으로, 값이 없다면 빈 스트림으로 변환한다. 이를 stream의 flatMap 메소드와 조합하면 앞의 코드를 다음처럼 바꿀 수 있다.
 
 ```java
 streamOfOptionals
