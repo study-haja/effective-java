@@ -10,12 +10,19 @@ Java에서 이미 같은 기능을 구현한 라이브러리가 있는 경우가
 
 ## Native method의 단점
 
-1. 메모리 corruption error에 취약해진다. garbage collector가 관리하주지 못한다.
+1. 메모리 corruption error에 취약해진다. garbage collector가 관리해주지 못한다.
+
+   - > memory corruption : 프로그래머, 프로그램 또는 언어 자체가 의도한 범위를 넘어서는 프로그램적 행위 때문에 특정 메모리 위치의 내용이 수정되는 현상
+
 2. 이식성이 낮다. 
+
 3. 디버깅 하기 어렵다.
+
 4. native code를 실행하고, 결과를 받는 절차에 비용이 든다.
+
 5. native code를 실행하기 위한 glue code를 구현하는데, 시간과 노력이 많이 든다.
 
 ## 요약
 
 native method를 사용하는것을 신중하게 생각하라. 만약  low-level 리소스나 native 라이브러리를 꼭 써야한다면, 가능하면 적게 쓰도록 하고 테스트도 충분히 해라.
+
