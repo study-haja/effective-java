@@ -1,4 +1,4 @@
-# Item 70 : Recoverable 조건에서는 checked exception 을 사용하고 프로그래밍 에러일때는 Runtime exception 을 사용하라.
+# Item 70 : 회복가능한 상황에서는 checked exception 을 사용하고 프로그래밍 에러일때는 Runtime exception 을 사용하라.
 
 ## 세가지 유형의 throwables
 
@@ -12,12 +12,11 @@
 
    - 절대 catch 하면 안됨.
    - 보통 exception 회복이 불가능하다고 판단 또는 계속되는 실행이 더 시스템에 악영향을 줌.
-   - 결국 현재 스레드가 죽고, 에러를 출력
-   - 주로 프로그래밍 에러를 나타내기 위해서 사용함.(예 : ArrayIndexOutOfBounds)
-   - RuntimeException을 상속받음.
 
    1. runtime exception
-
+      - 결국 현재 스레드가 죽고, 에러를 출력
+      - 주로 프로그래밍 에러를 나타내기 위해서 사용함.(예 : ArrayIndexOutOfBounds)
+      - RuntimeException을 상속받음.
    2. error
 
       - error는 보통 JVM이 사용하도록 예약되어 있다. 
