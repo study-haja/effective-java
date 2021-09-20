@@ -7,6 +7,8 @@
 
 ## 동기화 방법
 
+### 1. synchronized 사용
+
 ``` java
 public class StopThread {
   private static boolean stopRequested;
@@ -59,6 +61,8 @@ Thread backgroundThread = new Thread(() -> {
 ```
 
 여기서 중요한것은 read/write 작업에 모두 동기화를 해야한다는 점이다. 여기서 위의 작업들은 atomic하지만 스레드들간의 커뮤니케이션을 위해서 동기화를 한것이다.
+
+### 2. volatile 사용
 
 mutual exclusion없이 스레드들간의 커뮤니케이션만 가능하게 하는 방법으로 ``` volatile``` 을 이용한 방법이 있다.
 
