@@ -1,4 +1,4 @@
-## Item 72 : 표준 exception을 선호하라.
+# Item 72 : 표준 exception을 선호하라.
 
 ### 표준 exception 사용의 장점
 

@@ -121,3 +121,4 @@ public static int generateSerialNumber() {
 - 스레드들이 서로 mutable data를 공유한다면, read/write 작업은 동기화 되어야한다.    
 
 - 만약 thread communication만 필요하고 mutual exclusion이 필요없는 경우라면 volatile 키워드를 사용하라.
+
