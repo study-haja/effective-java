@@ -40,24 +40,26 @@ private static FieldType getField() {
 * 이중 검사 관용구 예제
 
 ```java
-private volatile FieldType field4;
+private volatile FieldType field;
 
 private FieldType getField4() {
-  FieldType result = field4;
-  if (result != null)    // 첫 번째 검사 (락 사용 안 함)
+  FieldType result = field;
+  if (result != null) // 첫 번째 검사 (락 사용 안 함)
     return result;
 
   synchronized(this) {
-    if (field4 == null) // 두 번째 검사 (락 사용)
-      field4 = computeFieldValue();
-    return field4;
+    if (field == null) // 두 번째 검사 (락 사용)
+      field = computeFieldValue();
+	  return field4;
   }
 }
 ```
 
 위와 같이 구현하면 초기화된 필드에 접근할 때 동기화 비용을 없애준다. 또한 필드가 초기화된 후로는 동기화하지 않으므로 해당 필드는 volatile로 선언해주면 된다.
 
-또한 반복해서 초기화해도 상관없는 인스턴스 필드는 이중 검사에서 두 번재 검사를 생략할 수 있다. 예를 들면 다음과 같다.
+정적 필드에도 적용할 수 있지만 굳이 그럴 이유는 없다. 이보다는 지연 초기화 홀더 클래스 방식이 더 낫다.
+
+또한 반복해서 초기화해도 상관없는 인스턴스 필드는 이중 검사에서 두 번째 검사를 생략할 수 있다. 예를 들면 다음과 같다.
 
 * 단일 검사 예제
 
@@ -73,3 +75,4 @@ private FieldType getField5() {
 ```
 
 모든 쓰레드가 필드의 값을 다시 계산해도 상관없고 필드의 타입이 long과 double을 제외한 다른 기본 타입이라면, 단일 검사의 필드 선언에서 volatile을 삭제해도 좋다. 하지만 어떤 환경에서는 필드 접근 속도를 높여주지만, 중복해서 초기화가 일어날 수 있다.
+
