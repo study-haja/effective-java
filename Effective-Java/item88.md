@@ -61,13 +61,14 @@ public final class Period {
    ``` java
    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
    	s.defaultReadObject();
-   	// Check that our invariants are satisfied if (start.compareTo(end) > 0)
-   	throw new InvalidObjectException(start +" after "+ end); 
+   	// Check that our invariants are satisfied 
+     if (start.compareTo(end) > 0)
+   		throw new InvalidObjectException(start +" after "+ end); 
    }
    ```
-
+   
    2. private date field를 byte stream에 추가
-
+   
       ``` java
       public class MutablePeriod { 
           // A period instance 
@@ -89,9 +90,10 @@ public final class Period {
               ref[4] = 4; // Ref # 4
               bos.write(ref); // The end field
               // Deserialize Period and "stolen" Date references 
-              ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray())); 			period = (Period) in.readObject();
-             start = (Date) in.readObject();
-             end = (Date) in.readObject();
+              ObjectInputStream in = new ObjectInputStream(new  ByteArrayInputStream(bos.toByteArray())); 			
+              period = (Period) in.readObject();
+              start = (Date) in.readObject();
+              end = (Date) in.readObject();
             } 
             catch (IOException | ClassNotFoundException e) { 
               throw new AssertionError(e);
@@ -115,9 +117,9 @@ public final class Period {
         	}
       }
       ```
-
+      
       해결방법은 아래와 같이 `readObject` 함수를 정의한다.
-
+      
       ``` java
       private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException { 
         s.defaultReadObject();
@@ -129,11 +131,11 @@ public final class Period {
       		throw new InvalidObjectException(start +" after "+ end); 
       }
       ```
-
+      
       ## 요약
-
+      
       `readObject` 함수를 작성할때는 다음 가이드라인을 따르라.
-
+      
       - private으로 남아있어야하는 레퍼런스 필드들은 defensive copy하라.
       - 체크가 실패한다면 `InvalidObjectException` 을 던져라
       - 오버라이딩 메소드들을 직간접적으로 호출하지 마라.
